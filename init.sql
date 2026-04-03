@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -25,7 +25,7 @@ ALTER SCHEMA audit OWNER TO postgres;
 CREATE SCHEMA aventura;
 
 
-ALTER SCHEMA aventura OWNER TO appuser;
+ALTER SCHEMA aventura OWNER TO postgres;
 
 
 -- Criação do Schema de Operações
@@ -346,7 +346,7 @@ CREATE TABLE operacoes.participacao_missao (
 ALTER TABLE operacoes.participacao_missao OWNER TO postgres;
 
 
-CREATE VIEW operacoes.vw_painel_tatico_missao AS
+CREATE MATERIALIZED VIEW operacoes.mv_painel_tatico_missao AS
  WITH atraso AS MATERIALIZED (
          SELECT operacoes.atrasar_consulta(4) AS ok
         )
@@ -382,7 +382,7 @@ CREATE VIEW operacoes.vw_painel_tatico_missao AS
   GROUP BY m.id, m.titulo, m.status, m.nivel_perigo, m.organizacao_id;
 
 
-ALTER VIEW operacoes.vw_painel_tatico_missao OWNER TO postgres;
+ALTER MATERIALIZED VIEW operacoes.mv_painel_tatico_missao OWNER TO postgres;
 
 
 ALTER TABLE ONLY audit.api_keys ALTER COLUMN id SET DEFAULT nextval('audit.api_keys_id_seq'::regclass);
@@ -2141,7 +2141,7 @@ ALTER TABLE ONLY audit.usuarios
 
 
 
-GRANT USAGE ON SCHEMA audit TO appuser;
+GRANT USAGE ON SCHEMA audit TO postgres;
 
 
 
@@ -2149,39 +2149,39 @@ REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.api_keys TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.api_keys TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.audit_entries TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.audit_entries TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.organizacoes TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.organizacoes TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.permissions TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.permissions TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.role_permissions TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.role_permissions TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.roles TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.roles TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.user_roles TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.user_roles TO postgres;
 
 
 
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.usuarios TO appuser;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE audit.usuarios TO postgres;
 
 
 
-ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA audit GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO appuser;
+ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA audit GRANT SELECT,INSERT,DELETE,UPDATE ON TABLES TO postgres;
 
 
 

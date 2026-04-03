@@ -1,6 +1,7 @@
 services:
   postgres:
-    image: postgres:15-alpine
+    image: leogloriainfnet/postgres-tp2-spring:2.0-mac
+    platform: linux/arm64
     container_name: postgres-tp2
     ports:
       - "5432:5432"
@@ -9,4 +10,21 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: leogloriainfnet/elastic-tp2-spring:1.0-windows
+    container_name: guilda-es
+    ports:
+      - "9200:9200"
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g -Dorg.elasticsearch.nativeaccess.enableVectorLibrary=false"
+      discovery.type: "single-node"
+      xpack.security.enabled: "false"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+
+volumes:
+  pgdata:
